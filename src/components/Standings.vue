@@ -37,7 +37,9 @@
 </template>
 
 <script>
-const ENDPOINT = "http://localhost:7777/standings";
+// const ENDPOINT = "http://localhost:7777/standings";
+const ENDPOINT =
+  "https://blissful-boyd-4d711e.netlify.app/.netlify/functions/standings/";
 import players from "../data/players.js";
 
 export default {
