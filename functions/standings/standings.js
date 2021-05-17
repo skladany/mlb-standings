@@ -3,9 +3,10 @@ const fetch = require("node-fetch");
 const API_ENDPOINT = "https://erikberg.com/mlb/standings.json";
 
 exports.handler = async (event, context) => {
-  let data, full_date, standings;
+  let response, data, full_date, standings;
   try {
-    data = await fetch(API_ENDPOINT);
+    response = await fetch(API_ENDPOINT);
+    data = response.data;
 
     full_date = data.standings_date;
 
