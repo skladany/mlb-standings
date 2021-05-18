@@ -6,6 +6,7 @@ exports.handler = async (event, context) => {
   let response, data, full_date, standings;
   try {
     response = await fetch(API_ENDPOINT);
+    data = await response.json();
 
     // data = response.data;
 
@@ -42,7 +43,7 @@ exports.handler = async (event, context) => {
     statusCode: 200,
     body: JSON.stringify({
       // data: { full_date, standings },
-      data: response,
+      data: data,
     }),
   };
 };
