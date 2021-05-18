@@ -66,8 +66,8 @@ const players = [
     ],
   },
   {
-    id: "ryan-dunleavy",
-    name: "Ryan Dunleavy",
+    id: "ryan-d",
+    name: "Ryan D",
     teams: [
       "los-angeles-dodgers",
       "new-york-yankees",
@@ -88,8 +88,8 @@ const players = [
     ],
   },
   {
-    id: "joe-phelan",
-    name: "Joe Phelan",
+    id: "joe-p",
+    name: "Joe P",
     teams: [
       "los-angeles-dodgers",
       "new-york-yankees",
@@ -99,8 +99,8 @@ const players = [
     ],
   },
   {
-    id: "steve-skladany",
-    name: "Steve Skladany",
+    id: "steve-s",
+    name: "Steve S",
     teams: [
       "los-angeles-dodgers",
       "san-diego-padres",
@@ -110,8 +110,8 @@ const players = [
     ],
   },
   {
-    id: "jeff-uthaichai",
-    name: "Jeff Uthaichai",
+    id: "jeff-u",
+    name: "Jeff U",
     teams: [
       "los-angeles-dodgers",
       "new-york-yankees",
@@ -154,8 +154,8 @@ const players = [
     ],
   },
   {
-    id: "ryan-murihead",
-    name: "Ryan Murihead",
+    id: "ryan-m",
+    name: "Ryan M",
     teams: [
       "atlanta-braves",
       "chicago-white-sox",
@@ -176,8 +176,8 @@ const players = [
     ],
   },
   {
-    id: "adam-papa",
-    name: "Adam Papa",
+    id: "adam-p",
+    name: "Adam P",
     teams: [
       "new-york-mets",
       "oakland-athletics",
