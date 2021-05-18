@@ -33,8 +33,8 @@ const players = [
     ],
   },
   {
-    id: "joe-gogel",
-    name: "Joe Gogel",
+    id: "joe-g",
+    name: "Joe G",
     teams: [
       "new-york-yankees",
       "san-diego-padres",
@@ -44,8 +44,8 @@ const players = [
     ],
   },
   {
-    id: "stephen-meyer",
-    name: "Stephen Meyer",
+    id: "stephen-m",
+    name: "Stephen M",
     teams: [
       "new-york-yankees",
       "chicago-white-sox",
