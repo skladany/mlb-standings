@@ -6,7 +6,7 @@ exports.handler = async (event, context) => {
   let response, json, data, full_date, standings;
   try {
     response = await axios.get(API_ENDPOINT);
-    data = response.data;
+    data = response.data.data;
 
     // full_date = data.standings_date;
 
