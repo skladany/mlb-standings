@@ -28,6 +28,13 @@ exports.handler = async (event, context) => {
     // });
 
     // standings.push(day);
+    return {
+      statusCode: 200,
+      body: JSON.stringify({
+        // data: { full_date, standings },
+        data: json.data,
+      }),
+    };
   } catch (err) {
     return {
       statusCode: err.statusCode || 500,
@@ -36,12 +43,4 @@ exports.handler = async (event, context) => {
       }),
     };
   }
-
-  return {
-    statusCode: 200,
-    body: JSON.stringify({
-      // data: { full_date, standings },
-      data: json,
-    }),
-  };
 };
