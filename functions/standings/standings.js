@@ -8,6 +8,8 @@ exports.handler = async (event, context) => {
     response = await fetch(API_ENDPOINT);
     json = await response.json();
 
+    const foo = json;
+
     //full_date = data.standings_date;
 
     // // Parse the date
@@ -32,7 +34,7 @@ exports.handler = async (event, context) => {
       statusCode: 200,
       body: JSON.stringify({
         // data: { full_date, standings },
-        data: json.data,
+        data: { json, foo },
       }),
     };
   } catch (err) {
