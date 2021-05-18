@@ -43,7 +43,7 @@ exports.handler = async (event, context) => {
     statusCode: 200,
     body: JSON.stringify({
       // data: { full_date, standings },
-      data: data,
+      data: json,
     }),
   };
 };
