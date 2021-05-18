@@ -1,12 +1,12 @@
-const axios = require("axios");
+const fetch = require("node-fetch");
 
 const API_ENDPOINT = "https://erikberg.com/mlb/standings.json";
 
 exports.handler = async (event, context) => {
   let response, json, data, full_date, standings;
   try {
-    response = await axios.get(API_ENDPOINT);
-    data = response.data;
+    response = await fetch(API_ENDPOINT);
+    json = await response.json();
 
     //full_date = data.standings_date;
 
@@ -39,9 +39,9 @@ exports.handler = async (event, context) => {
 
   return {
     statusCode: 200,
-    body: {
+    body: JSON.stringify({
       // data: { full_date, standings },
-      data: data,
-    },
+      data: json,
+    }),
   };
 };
