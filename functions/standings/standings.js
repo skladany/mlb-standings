@@ -11,27 +11,28 @@ exports.handler = async (event, context) => {
     full_date = data.standings_date;
 
     // // Parse the date
-    // const date = full_date.split("T")[0];
+    const date = full_date.split("T")[0];
 
-    // standings = [];
+    standings = [];
 
-    // const day = {
-    //   date,
-    //   team: {},
-    // };
+    const day = {
+      date,
+      team: {},
+    };
 
-    // data.standing.forEach((team) => {
-    //   day.team[team.team_id] = {
-    //     name: `${team.first_name} ${team.last_name}`,
-    //     wins: team.won,
-    //   };
-    // });
+    data.standing.forEach((team) => {
+      day.team[team.team_id] = {
+        name: `${team.first_name} ${team.last_name}`,
+        wins: team.won,
+      };
+    });
 
-    // standings.push(day);
+    standings.push(day);
+
     return {
       statusCode: 200,
       body: JSON.stringify({
-        data: { full_date, data },
+        data: { full_date, standings },
       }),
     };
   } catch (err) {
