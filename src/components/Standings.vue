@@ -64,8 +64,6 @@ export default {
         /// while (true) {
         const teamStandings = await fetch(ENDPOINT).then((r) => r.json());
 
-        console.log(teamStandings);
-
         this.dateFetched = new Date(teamStandings.full_date).toLocaleString();
 
         const currentStandings =
