@@ -38,8 +38,7 @@
 
 <script>
 // const ENDPOINT = "http://localhost:7777/standings";
-const ENDPOINT =
-  "https://blissful-boyd-4d711e.netlify.app/.netlify/functions/standings/";
+const ENDPOINT = "/.netlify/functions/standings/";
 import players from "../data/players.js";
 
 export default {
@@ -64,6 +63,8 @@ export default {
         /* eslint-disable no-constant-condition */
         /// while (true) {
         const teamStandings = await fetch(ENDPOINT).then((r) => r.json());
+
+        console.log(teamStandings);
 
         this.dateFetched = new Date(teamStandings.full_date).toLocaleString();
 
