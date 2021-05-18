@@ -6,9 +6,9 @@ exports.handler = async (event, context) => {
   let response, json, data, full_date, standings;
   try {
     response = await axios.get(API_ENDPOINT);
-    // data = response.data.data;
+    data = response.data;
 
-    // full_date = data.standings_date;
+    //full_date = data.standings_date;
 
     // // Parse the date
     // const date = full_date.split("T")[0];
@@ -41,7 +41,7 @@ exports.handler = async (event, context) => {
     statusCode: 200,
     body: JSON.stringify({
       // data: { full_date, standings },
-      data: response,
+      data: data,
     }),
   };
 };
