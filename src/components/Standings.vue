@@ -17,12 +17,10 @@
                     }}</span></v-expansion-panel-header
                   >
                   <v-expansion-panel-content>
-                    <ul v-for="team in team.teams" :key="team.teams">
+                    <ul v-for="team in team.teams" :key="team.id">
                       <li>
-                        <strong>{{ teamStandings[team].wins }}</strong>
-                        <span class="team-name">{{
-                          teamStandings[team].name
-                        }}</span>
+                        <strong>{{ team.wins }}</strong>
+                        <span class="team-name">{{ team.name }}</span>
                       </li>
                     </ul>
                   </v-expansion-panel-content>
@@ -37,8 +35,10 @@
 </template>
 
 <script>
-// const ENDPOINT = "http://localhost:7777/standings";
-const ENDPOINT = "/.netlify/functions/standings/";
+const ENDPOINT =
+  process.env.NODE_ENV === "development"
+    ? "http://localhost:7777/standings"
+    : "/.netlify/functions/standings/";
 import players from "../data/players.js";
 
 export default {
@@ -74,8 +74,15 @@ export default {
         // }
 
         const poolStandings = players.map((player) => {
-          // console.log(player.teams);
-          // console.log(currentStandings);
+          const teams = player.teams
+            .map((team) => {
+              return {
+                id: team,
+                name: currentStandings[team].name,
+                wins: currentStandings[team].wins,
+              };
+            })
+            .sort((a, b) => b.wins - a.wins);
 
           const wins = player.teams.reduce((acc, team) => {
             return acc + currentStandings[team].wins;
@@ -85,7 +92,7 @@ export default {
             id: player.id,
             name: player.name,
             wins,
-            teams: player.teams,
+            teams,
           };
         });
 

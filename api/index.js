@@ -41,8 +41,6 @@ app.get("/standings", async (req, res) => {
   // const athlete = req.params.athlete;
   // const accessToken = await getAccessToken(athlete);
 
-  let stats = [];
-
   // 1/1/2021
   // const after = req.query.after || 1609459200;
   // const per_page = req.query.per_page || 30;
