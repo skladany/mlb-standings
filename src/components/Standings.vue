@@ -3,7 +3,15 @@
     <v-main>
       <v-container>
         <v-row class="text-center">
-          <v-col cols="12">
+          <v-col cols="12" v-if="isLoading">
+            <h1>Baseball Standings</h1>
+            <v-progress-circular
+              :size="70"
+              :width="7"
+              indeterminate
+            ></v-progress-circular>
+          </v-col>
+          <v-col cols="12" v-else>
             <h1>Baseball Standings</h1>
             <h2>As of {{ dateFetched }}</h2>
             <br />
@@ -107,7 +115,7 @@ export default {
         //} // end while
         /* eslint-enable no-constant-condition */
         // }
-        //    this.isLoading = false;
+        this.isLoading = false;
       } catch (e) {
         console.log(e);
       }
