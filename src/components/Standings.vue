@@ -16,7 +16,7 @@
             <h2>As of {{ dateFetched }}</h2>
             <br />
             <v-row justify="center">
-              <v-expansion-panels accordion>
+              <v-expansion-panels accordion multiple>
                 <v-expansion-panel v-for="team in poolStandings" :key="team.id">
                   <v-expansion-panel-header
                     ><strong>{{ team.wins }}</strong>
@@ -24,7 +24,7 @@
                       team.name
                     }}</span></v-expansion-panel-header
                   >
-                  <v-expansion-panel-content>
+                  <v-expansion-panel-content :value="false">
                     <ul v-for="team in team.teams" :key="team.id">
                       <li>
                         <strong>{{ team.wins }}</strong>

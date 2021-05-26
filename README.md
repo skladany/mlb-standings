@@ -31,5 +31,5 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 ### Todo
 
 - [x] Sort Team Names
-- [] Allow accordians to stay open
-- [] Add Loader
+- [x] Allow accordians to stay open
+- [x] Add Loader
