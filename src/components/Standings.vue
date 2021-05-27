@@ -65,21 +65,12 @@ export default {
   methods: {
     fetchData: async function() {
       try {
-        // if (process.env.NODE_ENV === "development") {
-        //   this.runData = testData;
-        // } else {
-        /* eslint-disable no-constant-condition */
-        /// while (true) {
         const teamStandings = await fetch(ENDPOINT).then((r) => r.json());
 
         this.dateFetched = new Date(teamStandings.full_date).toLocaleString();
 
         const currentStandings =
           teamStandings.standings[teamStandings.standings.length - 1].team;
-
-        // if (data.length < 1) {
-        //   break;
-        // }
 
         const poolStandings = players.map((player) => {
           const teams = player.teams
@@ -109,12 +100,6 @@ export default {
         this.poolStandings = poolStandings;
         this.teamStandings = currentStandings;
 
-        // this.runData = [...this.runData, ...data];
-
-        // page++;
-        //} // end while
-        /* eslint-enable no-constant-condition */
-        // }
         this.isLoading = false;
       } catch (e) {
         console.log(e);

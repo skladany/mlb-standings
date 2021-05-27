@@ -2,15 +2,15 @@ const fetch = require("node-fetch");
 
 const API_ENDPOINT = "https://erikberg.com/mlb/standings.json";
 
-exports.handler = async (event, context) => {
-  let response, json, data, full_date, standings;
+exports.handler = async () => {
+  let response, data, full_date, standings;
   try {
     response = await fetch(API_ENDPOINT);
     data = await response.json();
 
     full_date = data.standings_date;
 
-    // // Parse the date
+    // Parse the date
     const date = full_date.split("T")[0];
 
     standings = [];
