@@ -43,10 +43,12 @@
 </template>
 
 <script>
-const ENDPOINT =
-  process.env.NODE_ENV === "development"
-    ? "http://localhost:7777/standings"
-    : "/.netlify/functions/standings/";
+// const ENDPOINT =
+//   process.env.NODE_ENV === "development"
+//     ? "http://localhost:7777/standings"
+//     : "/.netlify/functions/standings/";
+
+const ENDPOINT = "/.netlify/functions/standings/";
 import players from "../data/players.js";
 
 export default {

@@ -1,4 +1,5 @@
 const fetch = require("node-fetch");
+const fs = require("fs");
 
 const API_ENDPOINT = "https://erikberg.com/mlb/standings.json";
 
@@ -28,6 +29,16 @@ exports.handler = async () => {
     });
 
     standings.push(day);
+
+    // Save a local copy of this data
+    fs.writeFile(
+      `./data/${date}.json`,
+      JSON.stringify({ full_date, standings }),
+      function(err) {
+        if (err) return console.log(err);
+        console.log(`Saving JSON data for ${date}`);
+      }
+    );
 
     return {
       statusCode: 200,
