@@ -11,7 +11,7 @@ exports.handler = async (req) => {
   if (req_date != undefined) {
     try {
       console.log(`Returning cached data for ${req_date}`);
-      const data = fs.readFileSync(`./data/${req_date}.json`, "utf8");
+      const data = fs.readFileSync(`./public/data/${req_date}.json`, "utf8");
       const json = JSON.parse(data);
       json.cached = true;
       return {
@@ -52,7 +52,7 @@ exports.handler = async (req) => {
 
     // Save a local copy of this data
     fs.writeFile(
-      `./data/${date}.json`,
+      `./public/data/${date}.json`,
       JSON.stringify({ full_date, standings }),
       function(err) {
         if (err) return console.log(err);
