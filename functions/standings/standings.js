@@ -51,14 +51,14 @@ exports.handler = async (req) => {
     standings.push(day);
 
     // Save a local copy of this data
-    fs.writeFile(
-      `./public/data/${date}.json`,
-      JSON.stringify({ full_date, standings }),
-      function(err) {
-        if (err) return console.log(err);
-        console.log(`Saving JSON data for ${date}`);
-      }
-    );
+    const saveFile = `${process.cwd()}/public/data/${date}.json`;
+
+    fs.writeFile(saveFile, JSON.stringify({ full_date, standings }), function(
+      err
+    ) {
+      if (err) return console.log(err);
+      console.log(`Saving JSON data for ${date} in ${saveFile}`);
+    });
 
     return {
       statusCode: 200,
