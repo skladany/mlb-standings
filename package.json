@@ -9,6 +9,8 @@
   },
   "dependencies": {
     "core-js": "^3.6.5",
+    "dotenv": "^8.6.0",
+    "firebase-admin": "^9.10.0",
     "node-fetch": "^2.6.1",
     "vue": "^2.6.11",
     "vuetify": "^2.4.0"
