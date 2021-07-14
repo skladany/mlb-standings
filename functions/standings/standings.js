@@ -4,13 +4,17 @@ const admin = require("firebase-admin");
 
 const API_ENDPOINT = "https://erikberg.com/mlb/standings.json";
 
-console.log(process.env.PROJECT_ID);
+/* Private key is base64 encoded in Netlify UI b/c it 
+doesn't deal well with escaped characters, e.g, \n 
+So let's decode that first! */
+const buff = new Buffer.from(process.env.PRIVATE_KEY, "base64");
+const private_key = buff.toString("utf8");
 
 const FIREBASE_CONFIG = {
   type: "service_account",
   project_id: process.env.PROJECT_ID,
   private_key_id: process.env.PRIVATE_KEY_ID,
-  private_key: process.env.PRIVATE_KEY,
+  private_key: private_key,
   client_email: process.env.CLIENT_EMAIL,
   client_id: process.env.CLIENT_ID,
   auth_uri: "https://accounts.google.com/o/oauth2/auth",
