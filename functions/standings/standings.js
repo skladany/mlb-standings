@@ -77,11 +77,13 @@ exports.handler = async (req) => {
     standings.push(day);
 
     // Save a copy of this data in firestore
-    admin
+    const result = await admin
       .firestore()
       .collection("standings")
       .doc(date)
       .set({ full_date, standings });
+
+    console.log("Result", result);
 
     // Save a local copy of this data
     // const saveFile = `${process.cwd()}/public/data/${date}.json`;
