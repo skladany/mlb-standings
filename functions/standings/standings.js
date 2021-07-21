@@ -23,9 +23,9 @@ const FIREBASE_CONFIG = {
   client_x509_cert_url: process.env.CLIENT_X509_CERT_URL,
 };
 
-exports.handler = async (req) => {
-  const { date: req_date } = req.queryStringParameters;
-  console.log(`REQ ${req_date}`);
+exports.handler = async ({ queryStringParameters, headers }) => {
+  const { date: req_date } = queryStringParameters;
+  console.log({ req_date });
 
   if (!admin.apps.length) {
     admin.initializeApp({
@@ -94,6 +94,19 @@ exports.handler = async (req) => {
     //   if (err) return console.log(err);
     //   console.log(`Saving JSON data for ${date} in ${saveFile}`);
     // });
+
+    // Write logs
+    // const userAgent = headers["user-agent"];
+    // const referer = headers.referer;
+    const timestamp = new Date();
+
+    const logs = await admin
+      .firestore()
+      .collection("logs")
+      .doc()
+      .set({ timestamp, headers });
+
+    console.log("Result", logs);
 
     return {
       statusCode: 200,
