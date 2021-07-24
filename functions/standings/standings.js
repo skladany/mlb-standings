@@ -2,7 +2,7 @@ require("dotenv").config();
 const fetch = require("node-fetch");
 const admin = require("firebase-admin");
 
-const API_ENDPOINT = "https://erikberg.com/mlb/standings.json";
+const API_ENDPOINT = "https://erikberg.com/mlb/";
 
 /* Private key is base64 encoded in Netlify UI b/c it 
 doesn't deal well with escaped characters, e.g, \n 
@@ -23,37 +23,69 @@ const FIREBASE_CONFIG = {
   client_x509_cert_url: process.env.CLIENT_X509_CERT_URL,
 };
 
-exports.handler = async ({ queryStringParameters, headers }) => {
-  const { date: req_date } = queryStringParameters;
-  console.log({ req_date });
+const writeLogs = async function(db, headers) {
+  // Write logs
+  // const userAgent = headers["user-agent"];
+  // const referer = headers.referer;
+  const timestamp = new Date();
 
+  const logs = await db
+    .collection("logs")
+    .doc()
+    .set({ timestamp, headers });
+
+  console.log("writeLogs Result", logs);
+};
+
+exports.handler = async ({ queryStringParameters, headers }) => {
   if (!admin.apps.length) {
     admin.initializeApp({
       credential: admin.credential.cert(FIREBASE_CONFIG),
     });
   }
 
-  // Look for cached copy of data
-  // if (req_date != undefined) {
-  //   try {
-  //     console.log(`Returning cached data for ${req_date}`);
-  //     const data = fs.readFileSync(`./public/data/${req_date}.json`, "utf8");
-  //     const json = JSON.parse(data);
-  //     json.cached = true;
-  //     return {
-  //       statusCode: 200,
-  //       body: JSON.stringify(json),
-  //     };
-  //   } catch (err) {
-  //     console.log(`${req_date} has not been cached.`);
-  //     console.error(err);
-  //   }
-  // }
+  // Save db reference
+  const db = admin.firestore();
+
+  // Check for particular date
+  const { date: date } = queryStringParameters;
+
+  // Try to look for cached copy of data
+  if (date) {
+    const dateRef = db.collection("standings").doc(date);
+    const doc = await dateRef.get();
+    if (doc.exists) {
+      console.log("Cached Standings found!");
+      const { full_date, standings } = doc.data();
+
+      writeLogs(db, headers);
+
+      return {
+        statusCode: 200,
+        body: JSON.stringify({ full_date, standings, cached: true }),
+      };
+    }
+  } else console.log("No Cache exists, Hitting API");
+
+  const apiCall = date
+    ? "standings/" + date.replace(/-g/, "") + ".json"
+    : "standings.json";
+
+  const reqHeaders = date
+    ? {
+        Authorization: "Bearer " + process.env.ACCESS_TOKEN,
+      }
+    : {};
 
   let response, data, full_date, standings;
   try {
-    response = await fetch(API_ENDPOINT);
+    response = await fetch(API_ENDPOINT + apiCall, {
+      headers: reqHeaders,
+    });
+
     data = await response.json();
+
+    console.log({ data });
 
     full_date = data.standings_date;
 
@@ -77,36 +109,13 @@ exports.handler = async ({ queryStringParameters, headers }) => {
     standings.push(day);
 
     // Save a copy of this data in firestore
-    const result = await admin
-      .firestore()
+    const result = await db
       .collection("standings")
       .doc(date)
       .set({ full_date, standings });
 
     console.log("Result", result);
-
-    // Save a local copy of this data
-    // const saveFile = `${process.cwd()}/public/data/${date}.json`;
-
-    // fs.writeFile(saveFile, JSON.stringify({ full_date, standings }), function(
-    //   err
-    // ) {
-    //   if (err) return console.log(err);
-    //   console.log(`Saving JSON data for ${date} in ${saveFile}`);
-    // });
-
-    // Write logs
-    // const userAgent = headers["user-agent"];
-    // const referer = headers.referer;
-    const timestamp = new Date();
-
-    const logs = await admin
-      .firestore()
-      .collection("logs")
-      .doc()
-      .set({ timestamp, headers });
-
-    console.log("Result", logs);
+    writeLogs(db, headers);
 
     return {
       statusCode: 200,
