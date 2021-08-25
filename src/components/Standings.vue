@@ -1,45 +1,39 @@
 <template>
-  <v-app>
-    <v-main>
-      <v-container>
-        <v-row class="text-center">
-          <v-col cols="12" v-if="isLoading">
-            <h1>Baseball Standings</h1>
-            <v-progress-circular
-              :size="70"
-              :width="7"
-              indeterminate
-            ></v-progress-circular>
-          </v-col>
-          <v-col cols="12" v-else>
-            <h1>Baseball Standings</h1>
-            <h2>As of {{ dateFetched }}</h2>
-            <br />
-            <v-row justify="center">
-              <v-expansion-panels accordion multiple>
-                <v-expansion-panel v-for="team in poolStandings" :key="team.id">
-                  <v-expansion-panel-header
-                    ><strong>{{ team.wins }}</strong>
-                    <span class="team-name">{{
-                      team.name
-                    }}</span></v-expansion-panel-header
-                  >
-                  <v-expansion-panel-content :value="false">
-                    <ul v-for="team in team.teams" :key="team.id">
-                      <li>
-                        <strong>{{ team.wins }}</strong>
-                        <span class="team-name">{{ team.name }}</span>
-                      </li>
-                    </ul>
-                  </v-expansion-panel-content>
-                </v-expansion-panel>
-              </v-expansion-panels>
-            </v-row>
-          </v-col>
+  <v-container>
+    <v-row class="text-center">
+      <v-col cols="12" v-if="isLoading">
+        <v-progress-circular
+          :size="70"
+          :width="7"
+          indeterminate
+        ></v-progress-circular>
+      </v-col>
+      <v-col cols="12" v-else>
+        <h2>As of {{ dateFetched }}</h2>
+        <br />
+        <v-row justify="center">
+          <v-expansion-panels accordion multiple>
+            <v-expansion-panel v-for="team in poolStandings" :key="team.id">
+              <v-expansion-panel-header
+                ><strong>{{ team.wins }}</strong>
+                <span class="team-name">{{
+                  team.name
+                }}</span></v-expansion-panel-header
+              >
+              <v-expansion-panel-content :value="false">
+                <ul v-for="team in team.teams" :key="team.id">
+                  <li>
+                    <strong>{{ team.wins }}</strong>
+                    <span class="team-name">{{ team.name }}</span>
+                  </li>
+                </ul>
+              </v-expansion-panel-content>
+            </v-expansion-panel>
+          </v-expansion-panels>
         </v-row>
-      </v-container>
-    </v-main>
-  </v-app>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script>
@@ -49,7 +43,7 @@
 //     : "/.netlify/functions/standings/";
 
 const ENDPOINT = "/.netlify/functions/standings/";
-import players from "../data/players.js";
+import { fetchPoolStandings } from "../api/api.js";
 
 export default {
   name: "Standings",
@@ -67,40 +61,17 @@ export default {
   methods: {
     fetchData: async function() {
       try {
-        const teamStandings = await fetch(ENDPOINT).then((r) => r.json());
+        const {
+          dateFetched,
+          poolStandings,
+          teamStandings,
+        } = await fetchPoolStandings(ENDPOINT);
+        console.log({ poolStandings });
+        console.log({ teamStandings });
 
-        this.dateFetched = new Date(teamStandings.full_date).toLocaleString();
-
-        const currentStandings =
-          teamStandings.standings[teamStandings.standings.length - 1].team;
-
-        const poolStandings = players.map((player) => {
-          const teams = player.teams
-            .map((team) => {
-              return {
-                id: team,
-                name: currentStandings[team].name,
-                wins: currentStandings[team].wins,
-              };
-            })
-            .sort((a, b) => b.wins - a.wins);
-
-          const wins = player.teams.reduce((acc, team) => {
-            return acc + currentStandings[team].wins;
-          }, 0);
-
-          return {
-            id: player.id,
-            name: player.name,
-            wins,
-            teams,
-          };
-        });
-
-        poolStandings.sort((a, b) => b.wins - a.wins);
-
+        this.dateFetched = dateFetched;
         this.poolStandings = poolStandings;
-        this.teamStandings = currentStandings;
+        this.teamStandings = teamStandings;
 
         this.isLoading = false;
       } catch (e) {

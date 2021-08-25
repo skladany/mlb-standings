@@ -2,6 +2,7 @@ const players = [
   {
     id: "adam-p",
     name: "Adam P",
+    color: "Crimson",
     teams: [
       "cincinnati-reds",
       "miami-marlins",
@@ -13,6 +14,7 @@ const players = [
   {
     id: "chris-g",
     name: "Chris G",
+    color: "SteelBlue",
     teams: [
       "atlanta-braves",
       "boston-red-sox",
@@ -24,6 +26,7 @@ const players = [
   {
     id: "chris-w",
     name: "Chris W",
+    color: "Moccasin",
     teams: [
       "arizona-diamondbacks",
       "chicago-cubs",
@@ -35,6 +38,7 @@ const players = [
   {
     id: "corey",
     name: "Corey",
+    color: "MediumSlateBlue",
     teams: [
       "chicago-white-sox",
       "los-angeles-angels",
@@ -46,6 +50,7 @@ const players = [
   {
     id: "jamie-o",
     name: "Jamie O",
+    color: "Fuchsia",
     teams: [
       "houston-astros",
       "miami-marlins",
@@ -57,6 +62,7 @@ const players = [
   {
     id: "jeff-u",
     name: "Jeff U",
+    color: "Lime",
     teams: [
       "chicago-cubs",
       "los-angeles-dodgers",
@@ -68,6 +74,7 @@ const players = [
   {
     id: "joe-g",
     name: "Joe G",
+    color: "OliveDrab",
     teams: [
       "chicago-cubs",
       "cleveland-indians",
@@ -79,6 +86,7 @@ const players = [
   {
     id: "joe-p",
     name: "Joe P",
+    color: "MediumBlue",
     teams: [
       "chicago-cubs",
       "los-angeles-dodgers",
@@ -90,6 +98,7 @@ const players = [
   {
     id: "joseph-jr",
     name: "Joseph Jr.",
+    color: "LightSalmon",
     teams: [
       "chicago-white-sox",
       "miami-marlins",
@@ -101,6 +110,7 @@ const players = [
   {
     id: "kennie",
     name: "Kennie",
+    color: "Crimson",
     teams: [
       "atlanta-braves",
       "chicago-cubs",
@@ -112,6 +122,7 @@ const players = [
   {
     id: "melissa",
     name: "Melissa",
+    color: "Gold",
     teams: [
       "atlanta-braves",
       "boston-red-sox",
@@ -121,8 +132,9 @@ const players = [
     ],
   },
   {
-    id: "Mitch",
+    id: "mitch",
     name: "Mitch",
+    color: "Fuchsia",
     teams: [
       "chicago-cubs",
       "los-angeles-angels",
@@ -134,6 +146,7 @@ const players = [
   {
     id: "ryan-d",
     name: "Ryan D",
+    color: "DarkViolet",
     teams: [
       "chicago-cubs",
       "kansas-city-royals",
@@ -145,6 +158,7 @@ const players = [
   {
     id: "ryan-m",
     name: "Ryan M",
+    color: "GreenYellow",
     teams: [
       "atlanta-braves",
       "boston-red-sox",
@@ -156,6 +170,7 @@ const players = [
   {
     id: "sparks",
     name: "Sparks",
+    color: "YellowGreen",
     teams: [
       "los-angeles-angels",
       "milwaukee-brewers",
@@ -167,6 +182,7 @@ const players = [
   {
     id: "stephen-m",
     name: "Stephen M",
+    color: "Turquoise",
     teams: [
       "atlanta-braves",
       "chicago-cubs",
@@ -178,6 +194,7 @@ const players = [
   {
     id: "steve-s",
     name: "Steve S",
+    color: "DeepSkyBlue",
     teams: [
       "boston-red-sox",
       "chicago-cubs",

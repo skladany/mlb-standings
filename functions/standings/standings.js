@@ -86,8 +86,6 @@ exports.handler = async ({ queryStringParameters, headers }) => {
 
     data = await response.json();
 
-    console.log({ data });
-
     full_date = data.standings_date;
 
     // Parse the date
