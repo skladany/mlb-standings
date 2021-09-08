@@ -9,9 +9,9 @@ import LineChart from "./LineChart.vue";
 import players from "../data/players.js";
 import { fetchPoolStandings } from "../api/api.js";
 
-const ENDPOINT = "/.netlify/functions/standings";
-const START_DATE = "2021-04-01";
-const END_DATE = "2021-04-03";
+const ENDPOINT = "/.netlify/functions";
+// const START_DATE = "2021-04-01";
+// const END_DATE = "2021-04-07";
 
 export default {
   name: "TimeLine",
@@ -23,57 +23,70 @@ export default {
   async mounted() {
     this.loaded = false;
     try {
-      let full_date = new Date(START_DATE);
-      let end_date = new Date(END_DATE);
+      // let full_date = new Date(START_DATE);
+      // let end_date = new Date(END_DATE);
 
-      let date = full_date.toISOString().split("T")[0];
+      // let date = full_date.toISOString().split("T")[0];
 
-      let labels = [];
-      let standingsMap = players.map( p => { return { [p.id]:[] } } )
-      console.log({standingsMap});
+      // let labels = [];
+      // let standingsMap = {};
+      players.forEach(async (player) => {
+        const standings = await fetchPoolStandings(
+          `${ENDPOINT}/timeline?player=${player.id}`
+        );
 
-      while (full_date < end_date) {
-        
-        date = full_date.toISOString().split("T")[0];
-        console.log({ date });
+        console.log({ player });
+        console.log({ standings });
+        // console.log("player:", player.id, standings);
 
-        const {
-          poolStandings,
-          teamStandings,
-        } = await fetchPoolStandings(`${ENDPOINT}?date=${date}`);
+        // standingsMap[player.id] = [];
+      });
+      // console.log({standingsMap});
 
-        labels.push(date)
+      // while (full_date < end_date) {
 
-        console.log({poolStandings});
-        console.log({teamStandings});
+      //   date = full_date.toISOString().split("T")[0];
+      //   // console.log({ date });
+      //   // console.log({standingsMap});
 
-        // increment date
-        full_date.setDate(full_date.getDate() + 1);
-      }
+      //   const {
+      //     poolStandings
+      //   } = await fetchPoolStandings(`${ENDPOINT}?date=${date}`);
 
+      //   labels.push(date)
 
-      const data = {
-        labels,
-        datasets: [
-          {
-            label: players[0].name,
-            fill: false,
-            data: [1, 1, 2, 2, 2, 2, 3],
-            borderColor: players[0].color,
-            tension: 0,
-          },
-          {
-            label: players[1].name,
-            fill: false,
-            data: [0, 1, 1, 1, 2, 2, 2],
-            borderColor: players[1].color,
-            tension: 0,
-          },
-        ],
-      };
+      //   // Loop through poolStandings, adding to standingsMap
+      //   poolStandings.forEach( player => {
+      //     // console.log({player})
+      //     // console.log(standingsMap[player.id])
+      //     standingsMap[player.id].push(player.wins);
+      //   })
 
-      this.chartdata = data;
-      this.loaded = true;
+      //   // increment date
+      //   full_date.setDate(full_date.getDate() + 1);
+      // }
+
+      // let datasets = [];
+
+      // for (const player in standingsMap) {
+      //   datasets.push({
+      //     label: player,
+      //     fill: false,
+      //     data: standingsMap[player],
+      //     // borderColor: players[player].color,
+      //     tension: 0,
+      //   });
+      // }
+
+      // console.log(datasets);
+
+      // const data = {
+      //   labels,
+      //   datasets,
+      // };
+
+      // this.chartdata = data;
+      // this.loaded = true;
     } catch (e) {
       console.error(e);
     }
