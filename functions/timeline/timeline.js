@@ -1,7 +1,6 @@
 require("dotenv").config();
 const fetch = require("node-fetch");
 const admin = require("firebase-admin");
-
 const API_ENDPOINT = "/.netlify/functions/standings";
 
 /* Private key is base64 encoded in Netlify UI b/c it 
@@ -34,7 +33,7 @@ exports.handler = async ({ queryStringParameters }) => {
   const db = admin.firestore();
 
   // Check for particular date
-  const { player: player } = queryStringParameters;
+  const { player, startDate, endDate } = queryStringParameters;
 
   if (!player) {
     return {
@@ -48,11 +47,29 @@ exports.handler = async ({ queryStringParameters }) => {
   const playerRef = db.collection("timeline").doc(player);
   const doc = await playerRef.get();
   if (doc.exists) {
-    const data = doc.data();
+    const teamStandings = doc.data();
+
+    let full_date = new Date(startDate);
+    let end_date = new Date(endDate);
+
+    let standings = [];
+
+    while (full_date < end_date) {
+      const date = full_date.toISOString().split("T")[0];
+
+      if (date in teamStandings) {
+        standings.push(teamStandings[date]);
+      } else {
+        console.log(`${date} is missing, trying to fetch...`);
+        fetchMissingData();
+      }
+      // increment date
+      full_date.setDate(full_date.getDate() + 1);
+    }
 
     return {
       statusCode: 200,
-      body: JSON.stringify(data),
+      body: JSON.stringify(standings),
     };
   } else {
     return {
@@ -62,4 +79,11 @@ exports.handler = async ({ queryStringParameters }) => {
       }),
     };
   }
+};
+
+const fetchMissingData = async function() {
+  const poolStandings = await fetchPoolStandings(
+    `${API_ENDPOINT}?date=${date}`
+  );
+  console.log({ poolStandings });
 };

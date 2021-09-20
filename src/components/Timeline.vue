@@ -7,11 +7,12 @@
 <script>
 import LineChart from "./LineChart.vue";
 import players from "../data/players.js";
-import { fetchPoolStandings } from "../api/api.js";
 
 const ENDPOINT = "/.netlify/functions";
-// const START_DATE = "2021-04-01";
-// const END_DATE = "2021-04-07";
+const START_DATE = "2021-09-05";
+const END_DATE = "2021-09-07";
+import { fetchTimeline } from "../api/api";
+import { getDates } from "../utils/utils";
 
 export default {
   name: "TimeLine",
@@ -23,70 +24,35 @@ export default {
   async mounted() {
     this.loaded = false;
     try {
-      // let full_date = new Date(START_DATE);
-      // let end_date = new Date(END_DATE);
+      let labels = getDates({ startDate: START_DATE, endDate: END_DATE });
 
-      // let date = full_date.toISOString().split("T")[0];
-
-      // let labels = [];
-      // let standingsMap = {};
+      let datasets = [];
       players.forEach(async (player) => {
-        const standings = await fetchPoolStandings(
-          `${ENDPOINT}/timeline?player=${player.id}`
-        );
+        const standings = await fetchTimeline({
+          endpoint: `${ENDPOINT}/timeline?player=${player.id}&startDate=${START_DATE}&endDate=${END_DATE}`,
+        });
 
-        console.log({ player });
-        console.log({ standings });
-        // console.log("player:", player.id, standings);
-
-        // standingsMap[player.id] = [];
+        // Cycle thru each date, fetch missing data
+        datasets.push({
+          label: player.name,
+          fill: false,
+          data: standings,
+          borderColor: player.color,
+          tension: 0,
+        });
       });
-      // console.log({standingsMap});
 
-      // while (full_date < end_date) {
+      let data = {
+        labels,
+        datasets,
+      };
 
-      //   date = full_date.toISOString().split("T")[0];
-      //   // console.log({ date });
-      //   // console.log({standingsMap});
+      this.chartdata = data;
 
-      //   const {
-      //     poolStandings
-      //   } = await fetchPoolStandings(`${ENDPOINT}?date=${date}`);
-
-      //   labels.push(date)
-
-      //   // Loop through poolStandings, adding to standingsMap
-      //   poolStandings.forEach( player => {
-      //     // console.log({player})
-      //     // console.log(standingsMap[player.id])
-      //     standingsMap[player.id].push(player.wins);
-      //   })
-
-      //   // increment date
-      //   full_date.setDate(full_date.getDate() + 1);
-      // }
-
-      // let datasets = [];
-
-      // for (const player in standingsMap) {
-      //   datasets.push({
-      //     label: player,
-      //     fill: false,
-      //     data: standingsMap[player],
-      //     // borderColor: players[player].color,
-      //     tension: 0,
-      //   });
-      // }
-
-      // console.log(datasets);
-
-      // const data = {
-      //   labels,
-      //   datasets,
-      // };
-
-      // this.chartdata = data;
-      // this.loaded = true;
+      // HAAACK
+      setTimeout(() => {
+        this.loaded = true;
+      }, 1000);
     } catch (e) {
       console.error(e);
     }
