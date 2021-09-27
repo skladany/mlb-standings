@@ -1,6 +1,12 @@
-import players from "../data/players.js";
+let fetch;
 
-const fetchPoolStandings = async function(ENDPOINT) {
+if (typeof fetch === "undefined") {
+  fetch = require("node-fetch");
+}
+
+const { players } = require("../data/players.json");
+
+module.exports.fetchPoolStandings = async function(ENDPOINT) {
   const teamStandings = await fetch(ENDPOINT).then((r) => r.json());
 
   const dateFetched = new Date(teamStandings.full_date).toLocaleString();
@@ -37,7 +43,11 @@ const fetchPoolStandings = async function(ENDPOINT) {
 };
 
 // Fetches timesline formated as an object, returns an array of data
-const fetchTimeline = async function({ endpoint, startDate, endDate }) {
+module.exports.fetchTimeline = async function({
+  endpoint,
+  startDate,
+  endDate,
+}) {
   const teamStandings = await fetch(endpoint).then((r) => r.json());
 
   let full_date = new Date(startDate);
@@ -86,5 +96,3 @@ const fetchTimeline = async function({ endpoint, startDate, endDate }) {
 
   // return { dateFetched, poolStandings, teamStandings: currentStandings };
 };
-
-export { fetchPoolStandings, fetchTimeline };

@@ -6,11 +6,12 @@
 
 <script>
 import LineChart from "./LineChart.vue";
-import players from "../data/players.js";
+const { players } = require("../data/players.json");
+console.log(players);
 
 const ENDPOINT = "/.netlify/functions";
 const START_DATE = "2021-09-05";
-const END_DATE = "2021-09-07";
+const END_DATE = "2021-09-08";
 import { fetchTimeline } from "../api/api";
 import { getDates } from "../utils/utils";
 
@@ -28,6 +29,7 @@ export default {
 
       let datasets = [];
       players.forEach(async (player) => {
+        console.log({ player });
         const standings = await fetchTimeline({
           endpoint: `${ENDPOINT}/timeline?player=${player.id}&startDate=${START_DATE}&endDate=${END_DATE}`,
         });

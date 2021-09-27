@@ -230,7 +230,6 @@ const FIREBASE_CONFIG = {
 
 const fetchPoolStandings = async function(ENDPOINT) {
   // Save db reference
-  // const db = admin.firestore();
 
   const teamStandings = await fetch(ENDPOINT).then((r) => r.json());
 
@@ -265,12 +264,12 @@ const fetchPoolStandings = async function(ENDPOINT) {
   return poolStandings;
 };
 
-const ENDPOINT = "http://localhost:8888/.netlify/functions/standings";
+const ENDPOINT = `${process.env.HOST}/.netlify/functions/standings`;
 
 // Start of 2021 Baseball Season
 const START_DATE = "2021-07-30";
 
-const END_DATE = "2021-09-05";
+const END_DATE = "2021-09-24";
 
 const saveTimeline = async function() {
   if (!admin.apps.length) {
@@ -285,8 +284,6 @@ const saveTimeline = async function() {
   let full_date = new Date(START_DATE);
   let end_date = new Date(END_DATE);
 
-  // let now = new Date();
-
   let date = full_date.toISOString().split("T")[0];
 
   let saveTimeline;
@@ -298,9 +295,6 @@ const saveTimeline = async function() {
   });
 
   saveTimeline = setInterval(async function() {
-    console.log({ full_date });
-    console.log({ date });
-
     const poolStandings = await fetchPoolStandings(`${ENDPOINT}?date=${date}`);
 
     // console.log({poolStandings});
@@ -309,8 +303,6 @@ const saveTimeline = async function() {
 
     // Loop through poolStandings, adding to standingsMap
     poolStandings.forEach(async (player) => {
-      // console.log({player})
-      // console.log(standingsMap[player.id])
       standingsMap[player.id][date] = player.wins;
 
       await db

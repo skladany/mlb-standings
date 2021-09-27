@@ -1,7 +1,9 @@
 require("dotenv").config();
-const fetch = require("node-fetch");
 const admin = require("firebase-admin");
-const API_ENDPOINT = "/.netlify/functions/standings";
+
+const { fetchPoolStandings } = require(`${process.cwd()}/src/api/api.js`);
+
+const API_ENDPOINT = `${process.env.HOST}/.netlify/functions/standings`;
 
 /* Private key is base64 encoded in Netlify UI b/c it 
 doesn't deal well with escaped characters, e.g, \n 
@@ -61,7 +63,14 @@ exports.handler = async ({ queryStringParameters }) => {
         standings.push(teamStandings[date]);
       } else {
         console.log(`${date} is missing, trying to fetch...`);
-        fetchMissingData();
+
+        const wins = await fetchMissingData(date, player);
+
+        if (wins) {
+          // @ save in firebase
+          standings.push(wins);
+          playerRef.update({ [date]: wins });
+        }
       }
       // increment date
       full_date.setDate(full_date.getDate() + 1);
@@ -81,9 +90,14 @@ exports.handler = async ({ queryStringParameters }) => {
   }
 };
 
-const fetchMissingData = async function() {
-  const poolStandings = await fetchPoolStandings(
+const fetchMissingData = async function(date, player) {
+  const { poolStandings } = await fetchPoolStandings(
     `${API_ENDPOINT}?date=${date}`
   );
-  console.log({ poolStandings });
+
+  const found = poolStandings.find((team) => team.id === player);
+
+  if (!found) return;
+
+  return found.wins;
 };
