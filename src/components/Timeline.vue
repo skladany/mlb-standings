@@ -7,10 +7,10 @@
 <script>
 import LineChart from "./LineChart.vue";
 const { players } = require("../data/players.json");
-console.log(players);
 
 const ENDPOINT = "/.netlify/functions";
-const START_DATE = "2021-09-05";
+// const START_DATE = "2021-04-01";
+const START_DATE = "2021-08-01";
 const END_DATE = "2021-09-08";
 import { fetchTimeline } from "../api/api";
 import { getDates } from "../utils/utils";
@@ -21,6 +21,7 @@ export default {
   data: () => ({
     loaded: false,
     chartdata: null,
+    options: null,
   }),
   async mounted() {
     this.loaded = false;
@@ -29,10 +30,11 @@ export default {
 
       let datasets = [];
       players.forEach(async (player) => {
-        console.log({ player });
-        const standings = await fetchTimeline({
-          endpoint: `${ENDPOINT}/timeline?player=${player.id}&startDate=${START_DATE}&endDate=${END_DATE}`,
-        });
+        const standings = await fetchTimeline(
+          `${ENDPOINT}/timeline?player=${player.id}&startDate=${START_DATE}&endDate=${END_DATE}`
+        );
+
+        console.log({ standings });
 
         // Cycle thru each date, fetch missing data
         datasets.push({
@@ -50,11 +52,12 @@ export default {
       };
 
       this.chartdata = data;
+      console.log({ data });
 
       // HAAACK
       setTimeout(() => {
         this.loaded = true;
-      }, 1000);
+      }, 500);
     } catch (e) {
       console.error(e);
     }

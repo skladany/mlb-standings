@@ -43,56 +43,8 @@ module.exports.fetchPoolStandings = async function(ENDPOINT) {
 };
 
 // Fetches timesline formated as an object, returns an array of data
-module.exports.fetchTimeline = async function({
-  endpoint,
-  startDate,
-  endDate,
-}) {
-  const teamStandings = await fetch(endpoint).then((r) => r.json());
-
-  let full_date = new Date(startDate);
-  let end_date = new Date(endDate);
-
-  let standings = [];
-
-  console.log({ teamStandings });
-
-  while (full_date < end_date) {
-    const date = full_date.toISOString().split("T")[0];
-
-    if (date in teamStandings) {
-      standings.push(teamStandings[date]);
-    } else {
-      console.log(`${date} is missing, trying to fetch...`);
-    }
-
-    // Create single array of data
-
-    // Fill in missing data if applicable
-
-    // @todo API call if data is missing here
-
-    // // console.log({ date });
-    // // console.log({standingsMap});
-
-    // const {
-    //   poolStandings
-    // } = await fetchPoolStandings(`${ENDPOINT}?date=${date}`);
-
-    // labels.push(date)
-
-    // // Loop through poolStandings, adding to standingsMap
-    // poolStandings.forEach( player => {
-    //   // console.log({player})
-    //   // console.log(standingsMap[player.id])
-    //   standingsMap[player.id].push(player.wins);
-    // })
-
-    // increment date
-    full_date.setDate(full_date.getDate() + 1);
-  }
+module.exports.fetchTimeline = async function(ENDPOINT) {
+  const standings = await fetch(ENDPOINT).then((r) => r.json());
 
   return standings;
-
-  // return { dateFetched, poolStandings, teamStandings: currentStandings };
 };

@@ -78,8 +78,6 @@ exports.handler = async ({ queryStringParameters, headers }) => {
 
   let response, data, full_date, standings;
   try {
-    console.log({ reqHeaders });
-
     response = await fetch(API_ENDPOINT + apiCall, {
       headers: reqHeaders,
     });

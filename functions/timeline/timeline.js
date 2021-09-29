@@ -3,7 +3,7 @@ const admin = require("firebase-admin");
 
 const { fetchPoolStandings } = require(`${process.cwd()}/src/api/api.js`);
 
-const API_ENDPOINT = `${process.env.HOST}/.netlify/functions/standings`;
+const API_ENDPOINT = `${process.env.API_HOST}/.netlify/functions/standings`;
 
 /* Private key is base64 encoded in Netlify UI b/c it 
 doesn't deal well with escaped characters, e.g, \n 
@@ -36,6 +36,8 @@ exports.handler = async ({ queryStringParameters }) => {
 
   // Check for particular date
   const { player, startDate, endDate } = queryStringParameters;
+
+  console.log("IN TIMELINE", player, startDate, endDate);
 
   if (!player) {
     return {
@@ -75,6 +77,8 @@ exports.handler = async ({ queryStringParameters }) => {
       // increment date
       full_date.setDate(full_date.getDate() + 1);
     }
+
+    console.log("IN TIMELINE", standings);
 
     return {
       statusCode: 200,
