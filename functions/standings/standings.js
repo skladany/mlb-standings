@@ -71,14 +71,15 @@ exports.handler = async ({ queryStringParameters, headers }) => {
     ? "standings/" + date.replace(/-g/, "") + ".json"
     : "standings.json";
 
-  const reqHeaders = date
-    ? {
-        Authorization: "Bearer " + process.env.ACCESS_TOKEN,
-      }
-    : {};
+  const reqHeaders = {
+    Authorization: "Bearer " + process.env.ACCESS_TOKEN,
+    "User-Agent": "MLB Standings (mlb.postal.run, skladany.net)",
+  };
 
   let response, data, full_date, standings;
   try {
+    console.log({ reqHeaders });
+
     response = await fetch(API_ENDPOINT + apiCall, {
       headers: reqHeaders,
     });
