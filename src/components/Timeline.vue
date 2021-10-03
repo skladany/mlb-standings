@@ -12,24 +12,20 @@ const { players } = require("../data/players.json");
 
 const ENDPOINT = "/.netlify/functions";
 
-const date = new Date();
-const season_end = new Date("2021-10-04");
+// const date = new Date();
+// const season_end = new Date("2021-10-04");
 let startDate, endDate;
 
-if (date > season_end) {
-  startDate = "2021-09-23";
-  endDate = "2021-09-30";
-} else {
-  endDate = date.toISOString().split("T")[0];
+//if (date > season_end) {
+startDate = "2021-04-01";
+endDate = "2021-10-03";
+// } else {
+//   endDate = date.toISOString().split("T")[0];
 
-  // Last week
-  date.setDate(date.getDate() - 7);
-  startDate = date.toISOString().split("T")[0];
-}
-
-console.log({ startDate });
-console.log({ endDate });
-console.log({ season_end });
+//   // Last week
+//   date.setDate(date.getDate() - 7);
+//   startDate = date.toISOString().split("T")[0];
+// }
 
 import { fetchTimeline } from "../api/api";
 import { getDates } from "../utils/utils";

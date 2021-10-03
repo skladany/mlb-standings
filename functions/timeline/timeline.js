@@ -1,7 +1,7 @@
 require("dotenv").config();
 const admin = require("firebase-admin");
 
-const { fetchPoolStandings } = require(`${process.cwd()}/src/api/api.js`);
+const { fetchPoolStandings } = require(`../../src/api/api.js`);
 
 const API_ENDPOINT = `${process.env.API_HOST}/.netlify/functions/standings`;
 
@@ -36,8 +36,6 @@ exports.handler = async ({ queryStringParameters }) => {
 
   // Check for particular date
   const { player, startDate, endDate } = queryStringParameters;
-
-  console.log("IN TIMELINE", player, startDate, endDate);
 
   if (!player) {
     return {
