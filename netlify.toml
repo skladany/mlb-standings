@@ -1,0 +1,4 @@
+# Include all files in all functions
+[functions]
+  directory = "functions/"
+  included_files = ["src/api/api.js", "src/data/players.json",]

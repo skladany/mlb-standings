@@ -18,10 +18,8 @@ const fetchStandings = async function() {
 
   populateStandings = setInterval(async function() {
     date = full_date.toISOString().split("T")[0];
-    console.log({ date });
 
     const result = await fetch(`${ENDPOINT}?date=${date}`);
-    console.log(result.url);
 
     // increment date
     full_date.setDate(full_date.getDate() + 1);
